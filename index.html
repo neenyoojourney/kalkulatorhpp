@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kalkulator HPP</title>
+
+    <link rel="stylesheet" href="style.css">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+</head>
+<body>
+
+    <div class="container">
+
+        <!-- HEADER -->
+
+        <header class="header">
+            <h1>Kalkulator HPP</h1>
+            <p>
+                Hitung Harga Pokok Produksi, Laba, Margin Keuntungan,
+                dan Harga Jual Produk.
+            </p>
+        </header>
+
+        <!-- MAIN GRID -->
+
+        <div class="main-grid">
+
+            <!-- FORM -->
+
+            <section class="card">
+
+                <h2>Input Produk</h2>
+
+                <label>Nama Produk</label>
+
+                <input
+                    type="text"
+                    id="namaMinuman"
+                    placeholder="Contoh: Thai Tea"
+                >
+
+                <label>Jumlah Produksi</label>
+
+                <input
+                    type="number"
+                    id="jumlahCup"
+                    value="10"
+                >
+
+                <h3>Bahan Baku</h3>
+
+                <div id="bahanContainer">
+
+                    <div class="bahan-item">
+
+                        <input
+                            type="text"
+                            class="nama-bahan"
+                            placeholder="Nama Bahan"
+                        >
+
+                        <input
+                            type="number"
+                            class="harga-bahan"
+                            placeholder="Harga"
+                        >
+
+                    </div>
+
+                </div>
+
+                <button
+                    onclick="tambahBahan()"
+                    class="btn-add"
+                >
+                    + Tambah Bahan
+                </button>
+
+                <label>Biaya Kemasan</label>
+
+                <input
+                    type="number"
+                    id="cup"
+                    value="500"
+                >
+
+                <label>Biaya Tambahan</label>
+
+                <input
+                    type="number"
+                    id="topping"
+                    value="0"
+                >
+
+                <label>Biaya Operasional Total</label>
+
+                <input
+                    type="number"
+                    id="operasional"
+                    value="0"
+                >
+
+                <label>Margin Keuntungan (%)</label>
+
+                <input
+                    type="number"
+                    id="margin"
+                    value="50"
+                >
+
+                <button
+                    onclick="hitungHPP()"
+                    class="btn-hitung"
+                >
+                    Hitung HPP
+                </button>
+
+            </section>
+
+            <!-- RIGHT PANEL -->
+
+            <div class="right-panel">
+
+                <!-- HASIL -->
+
+                <section class="hasil">
+
+                    <h2>Hasil Perhitungan</h2>
+
+                    <div class="hasil-grid">
+
+                        <div class="hasil-card">
+                            <span>Total Produksi</span>
+                            <h3 id="totalBiaya">Rp 0</h3>
+                        </div>
+
+                        <div class="hasil-card">
+                            <span>HPP / Pcs</span>
+                            <h3 id="hppCup">Rp 0</h3>
+                        </div>
+
+                        <div class="hasil-card">
+                            <span>Harga Jual</span>
+                            <h3 id="hargaJual">Rp 0</h3>
+                        </div>
+
+                    </div>
+
+                </section>
+
+                <!-- DASHBOARD -->
+
+                <section class="dashboard">
+
+                    <div class="top-stats">
+
+                        <div class="stat-card">
+                            <span>Total Produk</span>
+                            <h2 id="totalProdukDashboard">0</h2>
+                        </div>
+
+                        <div class="stat-card">
+                            <span>Margin</span>
+                            <h2 id="avgMarginDashboard">0%</h2>
+                        </div>
+
+                        <div class="stat-card">
+                            <span>Profit</span>
+                            <h2 id="avgProfitDashboard">Rp 0</h2>
+                        </div>
+
+                    </div>
+
+                    <div class="chart-card">
+
+                        <h3>Grafik Laba Produk</h3>
+
+                        <canvas id="profitChart"></canvas>
+
+                    </div>
+
+                    <div class="chart-card">
+
+                        <h3>Top Profit Produk</h3>
+
+                        <ul
+                            id="rankingList"
+                            class="ranking-list"
+                        >
+                        </ul>
+
+                    </div>
+
+                </section>
+
+        <!-- SUMMARY -->
+
+        <section class="summary-grid">
+
+            <div class="summary-card">
+                <span>Total Produk</span>
+                <h2 id="totalProduk">0</h2>
+            </div>
+
+            <div class="summary-card">
+                <span>Margin Rata-rata</span>
+                <h2 id="avgMargin">0%</h2>
+            </div>
+
+            <div class="summary-card">
+                <span>Laba Rata-rata</span>
+                <h2 id="avgProfit">Rp 0</h2>
+            </div>
+
+            <div class="summary-card">
+                <span>Total Profit</span>
+                <h2 id="totalProfit">Rp 0</h2>
+            </div>
+
+            <div class="summary-card">
+                <span>Total Omzet</span>
+                <h2 id="totalRevenue">Rp 0</h2>
+            </div>
+
+        </section>
+
+            </div>
+
+        </div>
+
+         <!-- TOOLBAR -->
+
+        <section class="toolbar">
+            <div class="toolbar-actions">
+
+                <button
+                    id="exportExcel"
+                    class="btn-secondary"
+                >
+                    Export Excel
+                </button>
+
+                <button
+                    id="exportPDF"
+                    class="btn-secondary"
+                >
+                    Export PDF
+                </button>
+            </div>
+        </section>
+
+        <!-- RIWAYAT -->
+
+        <section class="history-card">
+
+            <div class="history-header">
+
+                <div>
+                    <h3>Riwayat Perhitungan</h3>
+                </div>
+
+                <button
+                    onclick="hapusRiwayat()"
+                    class="btn-hapus"
+                >
+                    Hapus Semua
+                </button>
+
+            </div>
+
+            <div class="table-wrapper">
+
+                <table>
+
+                    <thead>
+                        <tr>
+                            <th>No</th>
+                            <th>Produk</th>
+                            <th>HPP</th>
+                            <th>Harga Jual</th>
+                            <th>Laba</th>
+                            <th>Tanggal</th>
+                            <th>Aksi</th>
+                        </tr>
+                    </thead>
+
+                    <tbody id="historyList">
+                    </tbody>
+
+                </table>
+
+            </div>
+          
+        </section>
+
+    </div>
+
+    <!-- CHART JS -->
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <!-- XLSX -->
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+
+    <!-- PDF -->
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+
+    <!-- MAIN SCRIPT -->
+
+    <script src="script.js"></script>
+
+</body>
+</html>
